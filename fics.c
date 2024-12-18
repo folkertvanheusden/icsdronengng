@@ -139,7 +139,7 @@ void ProcessConsoleLineRed(char *line){
     ProcessConsoleLine(line, NULL);
 }
 
-void Prompt(mask){
+void Prompt(int mask){
     if((mask & PROXY) && !runData.inhibitPrompt){
 	SendToProxy("%s", runData.lastIcsPrompt);
     }
@@ -154,14 +154,14 @@ void AutoJoin(){
 }
 */
 
-void StartMultiFeedback(mask){
+void StartMultiFeedback(int mask){
   if(mask & (CONSOLE|PROXY)){
     
     runData.multiFeedbackDepth++;
   }
 }
 
-void StopMultiFeedback(mask){
+void StopMultiFeedback(int mask){
   if(mask & (CONSOLE|PROXY)){
     runData.multiFeedbackDepth--;
     if(runData.multiFeedbackDepth==0){
