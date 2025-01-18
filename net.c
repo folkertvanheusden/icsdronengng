@@ -40,11 +40,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "icsdrone.h"
 
+#include <netinet/tcp.h>
+
 int OpenTCP(const char *host, int port)
 {
     int fd, b0, b1, b2, b3;
     struct sockaddr_in sa;
     struct hostent *hp;
+    int yes = 1;
   
     if (!(hp = gethostbyname(host))) {
 	if (sscanf(host, "%d.%d.%d.%d", &b0, &b1, &b2, &b3) == 4) {
@@ -82,6 +85,7 @@ int OpenTCP(const char *host, int port)
     if (connect(fd, (struct sockaddr *) &sa, sizeof(struct sockaddr_in)) < 0){ 
 	ExitOn(EXIT_QUITRESTART,"Unable to connect to socket.");
     }
+    setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *)&yes, sizeof(int));
     return fd;
 }
 
